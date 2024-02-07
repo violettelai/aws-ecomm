@@ -162,23 +162,19 @@ function runAjax(data, dataType){
             // console.log(response);
             if(dataType=='html'){
                 if(response.includes("Connection to database failed") || response.includes("No connection could be made")){
-                    popupOpen("alertPopup");
-                    alertChange("Connection to database failed");
+                    alert("Connection to database failed");
                     result = "";
                 }
                 else if(response.includes("max_allowed_packet")){
-                    div = document.getElementById("errorDiv");
-                    div.innerHTML = "<span class='hoverIcon error'>!</span><span> The total file size to submit is too large</span>";
+                    alert("The total file size to submit is too large");
                     result = "";
                 }
                 else if(response.includes("Unknown database 'uvms'")){
-                    popupOpen("alertPopup");
-                    alertChange("Database is not created!");
+                    alert("Database is not created!");
                     result = "";
                 }
                 else if(response.includes("bind_param() on bool")){
-                    popupOpen("alertPopup");
-                    alertChange("Execution of query failed!");
+                    alert("Execution of query failed!");
                     result = "";
                 }
                 else

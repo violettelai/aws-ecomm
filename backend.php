@@ -3,7 +3,12 @@ function console($output){
     echo '<script>console.log('. json_encode($output, JSON_HEX_TAG).');</script>';
 }
 
-$connection = new mysqli("localhost", "root", "", "ecom");
+define('DB_SERVER', 'temp-db.clckaa8s0m9l.us-east-1.rds.amazonaws.com');
+define('DB_USERNAME', 'admin');
+define('DB_PASSWORD', 'password');
+define('DB_NAME', 'temp_db');
+
+$connection = new mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if ($connection->connect_error)
     die("Connection to database failed: " . $connection->connect_error);
 

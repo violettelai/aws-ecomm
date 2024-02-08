@@ -4,48 +4,61 @@ document.addEventListener('DOMContentLoaded', function() {
     var arr = loc.split('/');
     var page = arr[arr.length-1];
 
-    if(page == "index.php" || page == ""){
-        var data = new FormData();
-        data.append('action', 'retrieveAssetDashb');
+    var data = new FormData();
+    data.append('action', 'checkTableExist');
+    var result = runAjax(data, 'html');
     
-        var assetList = runAjax(data, 'json');
+    if(result == "-1")
+        console.log("Error creating table!");
+    else if(result == "0")
+        console.log("Table created successfully!");
+    else if(result == "1"){
+        console.log("Table already created!");
+
+        if(page == "index.php" || page == ""){
+            var data = new FormData();
+
+            data.append('action', 'retrieveAssetDashb');
         
-        var data = "";
-        for(i=0; i<assetList.length; i++){
-            data += `<div class=itemCard data-aid="`+assetList[i][0]+`" onclick='window.location = "edititem.php"; editpage(this)'>
-                <div class="itemCardInner">
-                    <div class="itemCardFront">
-                        <img src="`+assetList[i][3]+`" alt="stock img">
+            var assetList = runAjax(data, 'json');
+
+            var data = "";
+            for(i=0; i<assetList.length; i++){
+                data += `<div class=itemCard data-aid="`+assetList[i][0]+`" onclick='window.location = "edititem.php"; editpage(this)'>
+                    <div class="itemCardInner">
+                        <div class="itemCardFront">
+                            <img src="`+assetList[i][3]+`" alt="stock img">
+                        </div>
+                        <div class="itemCardBack">
+                            <h5>`+assetList[i][1]+`</h5>
+                            <p>`+assetList[i][2]+`</p>
+                        </div>
                     </div>
-                    <div class="itemCardBack">
-                        <h5>`+assetList[i][1]+`</h5>
-                        <p>`+assetList[i][2]+`</p>
-                    </div>
-                </div>
-            </div>`;
+                </div>`;
+            }
+
+            document.getElementById('itemContainer').innerHTML = data;
         }
+        else if(page == "edititem.php"){
+            aid = localStorage.getItem('aid');
 
-        document.getElementById('itemContainer').innerHTML = data;
-    }
-    else if(page == "edititem.php"){
-        aid = localStorage.getItem('aid');
+            var data = new FormData();
+            data.append('action', 'retrieveAssetEdit');
+            data.append('aid', aid);
 
-        var data = new FormData();
-        data.append('action', 'retrieveAssetEdit');
-        data.append('aid', aid);
+            var asset = runAjax(data, 'json');
 
-        var asset = runAjax(data, 'json');
-
-        if(asset != ""){
-            document.getElementById('aid').value = asset.aid;
-            document.getElementById('name').value = asset.name;
-            document.getElementById('category').value = asset.category;
-            document.getElementById('vendor').value = asset.vendor;
-            document.getElementById('desc').value = asset.description;
-            document.getElementById('qty').value = asset.qty;
-            document.getElementById('price').value = asset.price;
-            document.getElementById('date').value = asset.date;
-            document.getElementById('pic').src = asset.pic;
+            if(asset != ""){
+                document.getElementById('aid').value = asset.aid;
+                document.getElementById('name').value = asset.name;
+                document.getElementById('category').value = asset.category;
+                document.getElementById('vendor').value = asset.vendor;
+                document.getElementById('desc').value = asset.description;
+                document.getElementById('qty').value = asset.qty;
+                document.getElementById('price').value = asset.price;
+                document.getElementById('date').value = asset.date;
+                document.getElementById('pic').src = asset.pic;
+            }
         }
     }
 })
@@ -151,15 +164,20 @@ function preview(event){
 function runAjax(data, dataType){
     var result = "";
     $.ajax({
+        statusCode: {
+            500: function() {
+                alert("Script exhausted");
+            }
+        },
         type: "POST",
-        url: 'backend.php',
+        url: "backend.php",
         data: data,
         processData: false,
         contentType: false,
         async: false,
         dataType: dataType,
         success: function(response){
-            // console.log(response);
+            // console.log("ajax<"+response+">");
             if(dataType=='html'){
                 if(response.includes("Connection to database failed") || response.includes("No connection could be made")){
                     alert("Connection to database failed");
@@ -183,9 +201,10 @@ function runAjax(data, dataType){
             else
                 result = response;
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) { 
-            // if got error such as response is not valid JSON, run again in html to know true error
-            response2 = runAjax(data, 'html');
+        error: function(xhr, textStatus, errorThrown) { 
+            var err = JSON.parse(xhr.responseText);
+            console.log("error<"+err.Message+">");
+            // response2 = runAjax(data, 'html');
         } 
     });
     return result;

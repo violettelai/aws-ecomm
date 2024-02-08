@@ -1,21 +1,50 @@
 <?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 function console($output){
     echo '<script>console.log('. json_encode($output, JSON_HEX_TAG).');</script>';
 }
 
-define('DB_SERVER', 'temp-db.clckaa8s0m9l.us-east-1.rds.amazonaws.com');
-define('DB_USERNAME', 'admin');
-define('DB_PASSWORD', 'password');
-define('DB_NAME', 'temp_db');
+// $connection = new mysqli("localhost", "root", "", "ecom");
 
-$connection = new mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+define('DB_SERVER', 'ecom-phase1-db.cticka8yo4jf.us-east-1.rds.amazonaws.com');
+define('DB_USERNAME', 'admin');
+define('DB_PASSWORD', 'adminecom');
+define('DB_NAME', 'ecom');
+$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
 if ($connection->connect_error)
     die("Connection to database failed: " . $connection->connect_error);
+
 
 if(isset($_POST['action'])){
     $action = $_POST['action'];
 
-    if($action == 'insertAsset'){
+    if($action == 'checkTableExist'){
+        $table = mysqli_real_escape_string($connection, "asset");
+        $db = mysqli_real_escape_string($connection, "ecom");
+        $checktableexist = mysqli_query($connection, "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME = '$table' AND TABLE_SCHEMA = '$db'");
+
+        if(mysqli_num_rows($checktableexist) == 0)
+        {
+            $query = "CREATE TABLE asset (
+            aid INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(50) NOT NULL,
+            category VARCHAR(50) NOT NULL,
+            vendor VARCHAR(50) NOT NULL,
+            description TEXT,
+            qty INT,
+            price DECIMAL(10,2),
+            date DATETIME NOT NULL,
+            pic LONGBLOB
+            );";
+
+            if(!mysqli_query($connection, $query)) echo "-1";
+            else echo "0";
+        } else echo "1";
+
+    }else if($action == 'insertAsset'){
         $name = $_POST['name'];
         $category = $_POST['category'];
         $vendor = $_POST['vendor'];
@@ -83,13 +112,14 @@ if(isset($_POST['action'])){
         $result = getQueryResult($query, $dataType, $param);
 
         echo "1"; 
+
+    }else if($action == 'test'){
+        echo "test from backend";
     }
 }
 
 $connection->close(); 
 
-//combine steps: prepare statement, binding, execute, get result
-//parameters: query to execute, data type of the inputs clause, input param that match with number of data type
 function getQueryResult($query, $dataType, $param){
     global $connection;
     $statement = $connection->prepare($query);

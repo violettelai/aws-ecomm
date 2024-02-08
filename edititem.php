@@ -18,7 +18,6 @@
             <input type="text" id="aid" name="aid" readonly><br>
             <label for="name">Name:</label>
             <input type="text" id="name" name="name"><br>
-            <!-- dropdown select -->
             <label for="category">Category:</label>
             <input type="text" id="category" name="category"><br> 
             <label for="vendor">Vendor:</label>

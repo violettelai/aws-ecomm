@@ -6,8 +6,10 @@
         <link rel="stylesheet" href="style.css">
     </header>
     <body>
-        <h3>E-Commerce Asset</h3>
-        <button class="" onclick='window.location = "additem.php"'>Add Asset</button>
+        <h3 class="title">E-Commerce Asset</h3>
+        <div class="holder">
+            <button class="button" onclick='window.location = "additem.php"'>Add Asset</button>
+        </div>
 
         <div class="itemContainer" id="itemContainer">
         </div>

@@ -6,33 +6,57 @@
         <link rel="stylesheet" href="style.css">
     </header>
     <body>
-        <h3>Edit Asset</h3>
+        <h3 class="title">Edit Asset</h3>
 
-        <img id="pic" src="" alt="stock img">
-        <input type="file" accept="image/png, image/jpeg, image/jpg" onchange="preview(event)"><br>
-        <table>
-
-        </table>
-        <form name="editform">
-            <label for="aid">Asset ID:</label>
-            <input type="text" id="aid" name="aid" readonly><br>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name"><br>
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category"><br> 
-            <label for="vendor">Vendor:</label>
-            <input type="text" id="vendor" name="vendor"><br> 
-            <label for="desc">Description:</label>
-            <textarea id="desc" name="desc" rows="2" cols="50"></textarea><br>
-            <label for="qty">Quantity:</label>
-            <input type="number" id="qty" name="qty"><br>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price"><br>
-            <label for="date">Last Modified:</label>
-            <input type="text" id="date" name="date" readonly><br>
-        </form>
-        <button onclick="update()">Save</button>
-        <button onclick="remove()">Delete</button>
-        <button class="" onclick='window.location = "index.php"'>Return</button>
+        <div class="holder">
+            <img id="pic" src="" alt="stock img">
+        </div>
+        <div class="holder">
+            <input type="file" accept="image/png, image/jpeg, image/jpg" onchange="preview(event)"><br>
+        </div>
+        <div class="holder">
+            <form name="editform">
+                <table>
+                    <tr>
+                        <td><label for="aid">Asset ID</label></td>
+                        <td><input type="text" id="aid" name="aid" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><label for="name">Name</label></td>
+                        <td><input type="text" id="name" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="category">Category</label></td>
+                        <td><input type="text" id="category" name="category"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="vendor">Vendor</label></td>
+                        <td><input type="text" id="vendor" name="vendor"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="desc">Description</label></td>
+                        <td><textarea id="desc" name="desc" rows="2" cols="50"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label for="qty">Quantity</label></td>
+                        <td><input type="number" id="qty" name="qty"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="price">Price</label></td>
+                        <td><input type="number" id="price" name="price"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="date">Last Modifed</label></td>
+                        <td><input type="text" id="date" name="date" readonly></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="holder">
+            <button class="button" onclick="update()">Save</button>
+            <button class="button" onclick="remove()">Delete</button>
+            <button class="button" class="" onclick='window.location = "index.php"'>Return</button>
+        </div>
+        
     </body>
 </html>

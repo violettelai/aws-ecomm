@@ -6,13 +6,13 @@ function console($output){
     echo '<script>console.log('. json_encode($output, JSON_HEX_TAG).');</script>';
 }
 
-// $connection = new mysqli("localhost", "root", "", "ecom");
+$connection = new mysqli("localhost", "root", "", "ecom");
 
-define('DB_SERVER', 'ecom-phase1-db.cticka8yo4jf.us-east-1.rds.amazonaws.com');
-define('DB_USERNAME', 'admin');
-define('DB_PASSWORD', 'adminecom');
-define('DB_NAME', 'ecom');
-$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+// define('DB_SERVER', 'ecom-phase1-db.cticka8yo4jf.us-east-1.rds.amazonaws.com');
+// define('DB_USERNAME', 'admin');
+// define('DB_PASSWORD', 'adminecom');
+// define('DB_NAME', 'ecom');
+// $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 if ($connection->connect_error)
     die("Connection to database failed: " . $connection->connect_error);
